@@ -538,12 +538,16 @@ static CDVWKInAppBrowser* instance = nil;
     }
     
     //if is an app store link, let the system handle it, otherwise it fails to load it
-    if ([[ url scheme] isEqualToString:@"itms-appss"] || [[ url scheme] isEqualToString:@"itms-apps"] || [[ url scheme] isEqualToString:@"ekivitaapp"] || [[ url scheme] isEqualToString:@"pluspasapp"]) {
+    if ([[ url scheme] isEqualToString:@"itms-appss"] || [[ url scheme] isEqualToString:@"itms-apps"] || [[ url scheme] isEqualToString:@"ekivitaapp"]) {
         [theWebView stopLoading];
         [self openInSystem:url];
         shouldStart = NO;
-    }
-    else if ((self.callbackId != nil) && isTopLevelNavigation) {
+    }else if ([[ url scheme] isEqualToString:@"pluspasapp"]) {//OpenUrl method always returns YES. Possible change for ekivita needed too
+            [theWebView stopLoading];
+            [[NSNotificationCenter defaultCenter] postNotification:[NSNotification notificationWithName:CDVPluginHandleOpenURLNotification object:url]];
+            [[UIApplication sharedApplication] openURL:url];
+        shouldStart = NO;
+    }else if ((self.callbackId != nil) && isTopLevelNavigation) {
         // Send a loadstart event for each top-level navigation (includes redirects).
         CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK
                                                       messageAsDictionary:@{@"type":@"loadstart", @"url":[url absoluteString]}];
