@@ -542,7 +542,7 @@ static CDVWKInAppBrowser* instance = nil;
         [theWebView stopLoading];
         [self openInSystem:url];
         shouldStart = NO;
-    }else if ([[ url scheme] isEqualToString:@"pluspasapp"] || [[ url scheme] isEqualToString:@"BEPGenApp"]) {//OpenUrl method always returns YES. Possible change for ekivita needed too
+    }else if ([[ url scheme] isEqualToString:@"pluspasapp"]) {//OpenUrl method always returns YES. Possible change for ekivita needed too
             [theWebView stopLoading];
             [[NSNotificationCenter defaultCenter] postNotification:[NSNotification notificationWithName:CDVPluginHandleOpenURLNotification object:url]];
             [[UIApplication sharedApplication] openURL:url];
